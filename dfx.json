@@ -4,6 +4,10 @@
       "main": "src/hello_backend/main.mo",
       "type": "motoko"
     },
+    "counter": {
+      "main": "src/hello_backend/couter.mo",
+      "type": "motoko"
+    },
     "hello_frontend": {
       "dependencies": [
         "hello_backend"
