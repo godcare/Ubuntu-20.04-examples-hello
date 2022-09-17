@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 # helloabcdefg
+=======
+# helloxxx
+>>>>>>> a43492c8569dcf43d00fac5106f9edc12425b1a0
 
 Welcome to your new hello project and to the internet computer development community. By default, creating a new project adds this README and some template files to your project directory. You can edit these template files to customize your project and to include your own code to speed up the development cycle.
 
