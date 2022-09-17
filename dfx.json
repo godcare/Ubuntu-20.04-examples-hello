@@ -8,6 +8,10 @@
       "main": "src/hello_backend/couter.mo",
       "type": "motoko"
     },
+    "microblog": {
+      "main": "src/hello_backend/microblog.mo",
+      "type": "motoko"
+    },
     "hello_frontend": {
       "dependencies": [
         "hello_backend"
