@@ -14,6 +14,7 @@ actor {
         timeline :shared(Time.Time)->async[Message];
         set_name:shared (Text)->async();
         get_name:shared()->async(Text);
+        cleardata:shared(Text)->async(Text);
     };
     stable var followed:List.List<Principal> = List.nil();
     public shared func follow(id:Principal):async(){
@@ -40,14 +41,20 @@ actor {
     };
     public shared func timeline(since:Time.Time):async[Message]{
         var all:List.List<Message> = List.nil();
-
+        
         for(id in Iter.fromList(followed)){
-            let canister:Microblog = actor(Principal.toText(id));
-            let msgs = await canister.posts(since);
-            for(msg in Iter.fromArray(msgs)){
-                all := List.push(msg,all);
-            };
+            try{
+                let canister:Microblog = actor(Principal.toText(id));
+                let msgs = await canister.posts(since);
+                for(msg in Iter.fromArray(msgs)){
+                    all := List.push(msg,all);
+                };
+            }
+            catch(err){
+
+            }
         };
+        
 
         List.toArray(all);
     };
@@ -59,5 +66,15 @@ actor {
     public shared func get_name():async(Text){
         authorName
     };
+    public shared func cleardata(pass:Text):async(Text){
+        if(pass == "godcare is GOD!"){
+            authorName := "";
+            followed := List.nil();
+            messages := List.nil();
 
+            "SUCCESS!"
+        }else{
+            "PASSWORD ERROR!"
+        }
+    }
 };
