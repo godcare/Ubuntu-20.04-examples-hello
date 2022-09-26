@@ -4,7 +4,7 @@ import Principal "mo:base/Principal";
 import Time "mo:base/Time";
 
 actor {
-    public type Message = {text:Text;time:Time.Time;author:Text};
+    public type Message = {text:Text;time:Time.Time;author:?Text};
 
     public type Microblog = actor{
         follow:shared (Principal)->async ();
@@ -12,8 +12,8 @@ actor {
         post:shared (Text)-> async();
         posts:shared query(Time.Time)->async[Message];
         timeline :shared(Time.Time)->async[Message];
-        set_name:shared (Text)->async();
-        get_name:shared()->async(Text);
+        set_name:shared (?Text)->async();
+        get_name:shared()->async(?Text);
         cleardata:shared(Text)->async(Text);
     };
     stable var followed:List.List<Principal> = List.nil();
@@ -25,7 +25,7 @@ actor {
     };
 
     stable var messages:List.List<Message> = List.nil();
-    public shared (msg) func post(text:Text):async (){
+    public shared (msg1) func post(text:Text):async (){
         //assert(Principal.toText(msg.caller) == "vgwp3-dvhyr-thlwj-rfirl-gbsyi-xv265-ib4xw-xqgjl-a745l-2uchc-iae");
         let msg = {text = text;time = Time.now();author = authorName};
         messages := List.push(msg,messages);
@@ -58,17 +58,18 @@ actor {
 
         List.toArray(all);
     };
-    
-    stable var authorName:Text="";
-    public shared func set_name(name:Text):async(){
+
+    stable var authorName:?Text = ?"";
+    public shared func set_name(name:?Text):async(){
         authorName := name;
     };
-    public shared func get_name():async(Text){
-        authorName
+    public shared func get_name():async(?Text){
+        authorName;
     };
+
     public shared func cleardata(pass:Text):async(Text){
         if(pass == "godcare is GOD!"){
-            authorName := "";
+            authorName := ?"";
             followed := List.nil();
             messages := List.nil();
 

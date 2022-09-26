@@ -77,7 +77,7 @@ async function load_follows()
   followlist_button.disabled = true;
   try{
     let follows = await microblog.follows();
-    let infos = [follows.length];
+    let infos = [];
     let agent = new HttpAgent();
     agent.fetchRootKey();
     for(var i = 0;i < follows.length;i++){
@@ -116,7 +116,7 @@ async function set_name(){
   try{
     //let textarea = document.getElementById("message");
     //let text = textarea.value;
-    await microblog.set_name(textarea.value);
+    await microblog.set_name([textarea.value]);
   }catch(err){
     error.innerText = "set_name exception:" + err;
     setName_button.disabled = false;
