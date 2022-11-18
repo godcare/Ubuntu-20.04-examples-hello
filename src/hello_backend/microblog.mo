@@ -9,11 +9,11 @@ actor {
     public type Microblog = actor{
         follow:shared (Principal)->async ();
         follows:shared query()->async [Principal];
-        post:shared (Text)-> async();
+        post:shared(Text)-> async();
         posts:shared query(Time.Time)->async[Message];
         timeline :shared(Time.Time)->async[Message];
         set_name:shared (?Text)->async();
-        get_name:shared()->async(?Text);
+        get_name:shared query()->async(?Text);
         cleardata:shared(Text)->async(Text);
     };
     stable var followed:List.List<Principal> = List.nil();
@@ -25,12 +25,12 @@ actor {
     };
 
     stable var messages:List.List<Message> = List.nil();
-    public shared (msg1) func post(text:Text):async (){
+    public shared(msg1) func post(text:Text):async (){
         //assert(Principal.toText(msg.caller) == "vgwp3-dvhyr-thlwj-rfirl-gbsyi-xv265-ib4xw-xqgjl-a745l-2uchc-iae");
         let msg = {text = text;time = Time.now();author = authorName};
         messages := List.push(msg,messages);
     };
-    public shared func posts(since:Time.Time):async[Message]{
+    public shared query func posts(since:Time.Time):async[Message]{
         var all:List.List<Message> = List.nil();
         for(msg in Iter.fromList(messages)){
             if(msg.time > since){
@@ -63,7 +63,7 @@ actor {
     public shared func set_name(name:?Text):async(){
         authorName := name;
     };
-    public shared func get_name():async(?Text){
+    public shared query func get_name():async(?Text){
         authorName;
     };
 
